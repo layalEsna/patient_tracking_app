@@ -162,4 +162,15 @@ def update(self):
     CURSOR.execute(sql, (self.name, self.lastname, self.age, self.sdisease, self.doctor_id))
     CONN.commit()
 
+def delete(self):
+    sql = '''
+         DELETE patients
+         WHERE id = ?
+        '''
+    CURSOR.execute(sql, (self.id,))
+    CONN.commit()
+    del type(self).all[self.id]
+    self.id = None
+
+
        

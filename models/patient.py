@@ -110,20 +110,33 @@ class Patient:
        patient = cls(name, lastname, age, disease, doctor_id)
        patient.save()
        return patient
-    
-    @classmethod
-    def instance_from_db(cls, row):
-        '''Return a patient instance based on a database row.'''
-        patient = cls.all.get(row[0])
-        if patient:
-            patient.name = row[1]
-            patient.lastname = row[2]
-            patient.age = row[3]
-            patient.disease = row[4]
-            patient.doctor_id = row[5]
-        else:
-            patient = cls(row[1], row[2], row[3], row[4], row[5])
-            patient.id = row[0]
-            cls.all[patient.id] = patient
+   
+   
+@classmethod
+def instance_from_db(cls, row):
+    '''Return a patient instance based on a database row.'''
+    patient = cls.all.get(row[0])
+    if patient:
+        patient.name = row[1]
+        patient.lastname = row[2]
+        patient.age = row[3]
+        patient.disease = row[4]
+        patient.doctor_id = row[5]
+    else:
+        patient = cls(row[1], row[2],row[3],row[4],row[5])
+        patient.id = row[0]
+        cls.all[patient.id] = patient
 
-     
+@classmethod
+def find_by_id(cls, id):
+    '''Find and return a patient instance by ID from the patients table.'''
+    sql = '''
+         SELECT *
+         FROM patients 
+         WHERE id = ?
+
+       '''
+    row = CURSOR.execute(sql, (id,)).fetchone()
+    patient = cls.instance_from_db(row)
+    return patient if patient else None
+       

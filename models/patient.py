@@ -1,5 +1,3 @@
-        
-
 
 
 class Patient:
@@ -12,3 +10,11 @@ class Patient:
         self.disease = disease
         self.doctor_id = doctor_id
         Patient.all.append(self)
+
+    @property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, name):
+        if isinstance(name, str) and len(name) > 2:
+            self._name = name

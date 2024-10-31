@@ -17,6 +17,9 @@ class Doctor:
     def name(self, name):
         if isinstance(name, str) and len(name) > 2:
             self._name = name
+        else:
+            raise ValueError('Name must be a string longer than 2 characters.')
+
 
     
     @property
@@ -26,6 +29,9 @@ class Doctor:
     def lastname(self, lastname):
         if isinstance(lastname, str) and len(lastname) > 2:
             self._lastname = lastname
+        else:
+            raise ValueError('Lastname must be a string longer than 2 characters.')
+
 
 
         

@@ -134,3 +134,13 @@ class Doctor:
         CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
         CONN.commit()
 
+    def delete(self):
+        sql = ''' 
+            DELETE doctors
+            WHERE id = ?
+          ''' 
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+        del type(self).all[self.id]
+        self.id = None
+

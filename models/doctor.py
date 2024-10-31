@@ -110,4 +110,17 @@ class Doctor:
         row = CURSOR.execute(sql, (id,)).fetchone()
         doctor = cls.instance_from_db(row)
         return doctor if doctor else None
-   
+    
+    @classmethod
+    def get_all(cls):
+        sql = '''
+           SELECT *
+           FROM doctors
+         '''
+        doctors = []
+        rows = CURSOR.execute(sql).fetchall()
+        for row in rows:
+            doctor = cls.instance_from_db(row)
+            doctors.append(doctor)
+        return doctors
+

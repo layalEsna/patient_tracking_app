@@ -85,4 +85,17 @@ class Doctor:
         doctor = cls(name, lastname, specialty)
         doctor.save()
 
-        
+    @classmethod
+    def instance_from_db(cls, row):
+        '''Return a doctor instance based on a database row.'''
+        doctor = cls.all.get(row[0])
+        if doctor:
+            doctor.name = row[1]
+            doctor.lastname = row[2]
+            doctor.specialty = row[3]
+        else:
+            doctor = cls(row[1], row[2], row[3])
+            doctor.id = row[0]
+            cls.all[doctor.id] = doctor
+        return doctor
+   

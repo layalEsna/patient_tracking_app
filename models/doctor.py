@@ -98,4 +98,16 @@ class Doctor:
             doctor.id = row[0]
             cls.all[doctor.id] = doctor
         return doctor
+    @classmethod
+    def find_by_id(cls, id):
+        '''Find and return a doctor instance by ID from the doctors table.'''
+    
+        sql = '''
+             SELECT *
+             FROM doctors
+             WHERE id = ?
+          ''' 
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        doctor = cls.instance_from_db(row)
+        return doctor if doctor else None
    

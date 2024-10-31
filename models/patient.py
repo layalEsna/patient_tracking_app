@@ -1,4 +1,6 @@
-
+import sqlite3
+CONN = sqlite3.connect('your_database_name.db')
+CURSOR = CONN.cursor()
 
 class Patient:
     all = []
@@ -67,3 +69,22 @@ class Patient:
             raise ValueError('Doctor ID must be a positive integer.')
 
 
+        
+    @classmethod
+    def Create_table(cls):
+
+        sql = '''
+             CREATE TABLE IF NOT EXISTS 
+             patients(
+             id INTEGER PRIMARY KEY,
+             name TEXT,
+             lastname TEXT,
+             age INTEGER,
+             disease TEXT,
+             doctor_id INTEGER,
+             FOREIGN KEY (doctor_id) REFERENCES doctors(id)
+
+             )
+          '''
+        CURSOR.execute(sql)
+        CONN.commit()

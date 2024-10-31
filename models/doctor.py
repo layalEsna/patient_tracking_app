@@ -116,6 +116,7 @@ class Doctor:
         sql = '''
            SELECT  *
            FROM doctors
+           SET 
          '''
         doctors = []
         rows = CURSOR.execute(sql).fetchall()
@@ -123,4 +124,13 @@ class Doctor:
             doctor = cls.instance_from_db(row)
             doctors.append(doctor)
         return doctors if doctors else None
+
+    def update(self):
+        sql = '''
+             UPDATE doctors
+             SET name = ?, lastname = ?, specialty = ?
+             WHERE id = ?
+         '''
+        CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
+        CONN.commit()
 

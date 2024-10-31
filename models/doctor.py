@@ -1,5 +1,6 @@
-
-
+import sqlite3
+CONN = sqlite3.connect('your_database_name.db')
+CURSOR = CONN.cursor()
 class Doctor:
     all = []
     def __init__(self, name, lastname, specialty, id=None):
@@ -42,6 +43,21 @@ class Doctor:
             self._specialty = specialty
         else:
             raise ValueError('Specialty must be a string longer than 2 characters.')
+        
+    @classmethod
+    def Create_table(cls):
+
+        sql = '''
+             CREATE TABLE IF NOT EXISTS 
+             doctors(
+             id INTEGER PRIMARY KEY,
+             name TEXT,
+             lastname TEXT,
+             specialty TEXT
+             )
+          '''
+        CURSOR.execute(sql)
+        CONN.commit()
 
 
 

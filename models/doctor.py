@@ -32,6 +32,17 @@ class Doctor:
         else:
             raise ValueError('Lastname must be a string longer than 2 characters.')
 
+    
+    @property
+    def specialty(self):
+        return self._specialty
+    @specialty.setter
+    def specialty(self, specialty):
+        if isinstance(specialty, str) and len(specialty) > 2:
+            self._specialty = specialty
+        else:
+            raise ValueError('Specialty must be a string longer than 2 characters.')
+
 
 
         

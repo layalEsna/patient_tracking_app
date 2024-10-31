@@ -139,4 +139,18 @@ def find_by_id(cls, id):
     row = CURSOR.execute(sql, (id,)).fetchone()
     patient = cls.instance_from_db(row)
     return patient if patient else None
+
+@classmethod
+def get_all(cls):
+    sql = '''
+         SELECT *
+         FROM patients
+       '''
+    patients = []
+    rows = CURSOR.execute(sql).fetchall()
+    for row in rows:
+        patient = cls.instance_from_db(row)
+        patients.append(patient)
+    return patients if patients else None
+
        

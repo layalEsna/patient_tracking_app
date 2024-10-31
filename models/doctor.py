@@ -114,7 +114,7 @@ class Doctor:
     @classmethod
     def get_all(cls):
         sql = '''
-           SELECT *
+           SELECT  *
            FROM doctors
          '''
         doctors = []
@@ -122,5 +122,5 @@ class Doctor:
         for row in rows:
             doctor = cls.instance_from_db(row)
             doctors.append(doctor)
-        return doctors
+        return doctors if doctors else None
 

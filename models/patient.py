@@ -38,4 +38,13 @@ class Patient:
         if isinstance(age, int) and 18 >= age >= 100:
             self._age = age
 
+    
+    @property
+    def disease(self):
+        return self._disease
+    @disease.setter
+    def disease(self, disease):
+        if isinstance(disease, str) and len(disease) > 0:
+            self._disease = disease
+
 

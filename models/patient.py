@@ -92,3 +92,15 @@ class Patient:
          '''
         CURSOR.execute(sql)
         CONN.commit()
+
+    def save(self):
+        '''Insert the Patient instance into db and save the id.'''
+        sql = '''
+             INSERT INTO patients(name, lastname, age, disease, doctor_id)
+             VALUES(?,?,?,?,?)
+             '''
+        CURSOR.execute(sql, (self.name, self.lastname, self.age, self.disease, self.doctor_id))
+        CONN.commit()
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+       

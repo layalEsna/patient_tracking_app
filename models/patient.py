@@ -18,3 +18,13 @@ class Patient:
     def name(self, name):
         if isinstance(name, str) and len(name) > 2:
             self._name = name
+
+    
+    @property
+    def lastname(self):
+        return self._lastname
+    @lastname.setter
+    def lastname(self, lastname):
+        if isinstance(lastname, str) and len(lastname) > 2:
+            self._lastname = lastname
+

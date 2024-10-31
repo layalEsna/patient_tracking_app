@@ -103,4 +103,10 @@ class Patient:
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
-       
+    
+    @classmethod
+    def create(cls, name, lastname, age, disease, doctor_id):
+       '''Creates instance and saves it in the db.'''
+       patient = cls(name, lastname, age, disease, doctor_id)
+       patient.save()
+       return patient

@@ -153,4 +153,13 @@ def get_all(cls):
         patients.append(patient)
     return patients if patients else None
 
+def update(self):
+    sql = '''
+         UPDATE patients
+         SET name = ?, lastname = ?, age = ?, disease = ?, doctor_id = ?
+         WHERE id = ?
+        '''
+    CURSOR.execute(sql, (self.name, self.lastname, self.age, self.sdisease, self.doctor_id))
+    CONN.commit()
+
        

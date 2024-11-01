@@ -105,6 +105,18 @@ def delete_patient():
     else:
         print('Patient not found.')
 
+def doctors_list():
+    print("doctors Information")
+    doctors = Doctor.get_all()
+    if doctors:
+        for doctor in doctors:
+           print(f'*** {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}')
+          
+    else:
+        print('*** No doctors found')
+
+
+
        
 
 

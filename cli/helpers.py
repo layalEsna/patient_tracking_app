@@ -115,6 +115,19 @@ def doctors_list():
     else:
         print('*** No doctors found')
 
+def add_doctor():
+    print('Add New doctor...')
+    doctor_first_name = input("Enter doctor's first name: ")
+    doctor_lastname = input("Enter doctor's last name: ")
+    doctor_specialty = input("Enter doctor's specialty: ")
+    
+    try:
+       Doctor.create(doctor_first_name, doctor_lastname,doctor_specialty)
+       print(f'*** Success {doctor_first_name} {doctor_lastname}, Specialty: {doctor_specialty} added.')
+       
+    except ValueError as e:
+        print(f"Error: {e}. Please try again.")
+
 
 
        

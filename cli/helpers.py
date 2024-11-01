@@ -66,7 +66,7 @@ def add_patient():
 
 def update_patient():
     print('Update Patient...')
-    patient_id = input("Enter patient ID.")
+    patient_id = input("Enter patient ID: ")
     patient = Patient.find_by_id(patient_id)
     if patient:
         patient_first_name = input("Enter patient's first name: ")
@@ -77,11 +77,11 @@ def update_patient():
         try:
             patient.update(patient_first_name, patient_lastname, patient_age, patient_disease, patient_doctor_id)
             print(f'\nUpdated Patient Information:')
-            print(f'*** {patient_first_name} {patient_lastname}, age: {patient_age}')
-            print(f'*** Health problem: {patient_disease}')
+            print(f'*** Success {patient_first_name} {patient_lastname}, age: {patient_age} updated.')
+            print(f'***  Success Health problem: {patient_disease} updated.')
             doctor = Doctor.find_by_id(patient_doctor_id)
             if doctor:
-                print(f'*** Physition: {doctor.name} {doctor.lastname}')
+                print(f'***  Success Physition: {doctor.name} {doctor.lastname} Updated.')
             else:
                 print('Physician information not found.')
         except ValueError as e:
@@ -127,6 +127,25 @@ def add_doctor():
        
     except ValueError as e:
         print(f"Error: {e}. Please try again.")
+
+
+def update_doctor():
+    print('Update doctor...')
+    doctor_id = input("Enter doctor ID: ")
+    doctor = Doctor.find_by_id(doctor_id)
+    if doctor:
+        doctor_first_name = input("Enter doctor's first name: ")
+        doctor_lastname = input("Enter doctor's last name: ")
+        doctor_specialty = input("Enter doctor's specialty: ")
+        try:
+            doctor.update(doctor_first_name, doctor_lastname, doctor_specialty)
+            print(f'\nUpdated doctor Information:')
+            print(f'*** Success {doctor_first_name} {doctor_lastname}, Specialty: {doctor_specialty} updated.')
+           
+        except ValueError as e:
+            print(f'Error: {e}. Please try again.')
+    else:
+        print('doctor not found')
 
 
 

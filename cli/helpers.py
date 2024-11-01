@@ -147,6 +147,22 @@ def update_doctor():
     else:
         print('doctor not found')
 
+def delete_doctor():
+    print('Delete doctor...')
+    doctor_id = input("Enter doctor's ID: ")
+    doctor = Doctor.find_by_id(doctor_id)
+    if doctor:
+        confirm = input(f'Are you sure you want to delete {doctor.name} {doctor.lastname} with ID: {doctor_id}? (Y/N): ')
+        if confirm.lower() == 'y':
+            doctor.delete(doctor_id)
+            print(f'*** Success: doctor {doctor.name} {doctor.lastname} with ID {doctor_id} has been deleted.')
+        elif confirm.lower() == 'n':
+            print('Deletion canceled.')
+        else:
+            print('Invalid input. Deletion canceled.')
+    else:
+        print('doctor not found.')
+
 
 
        

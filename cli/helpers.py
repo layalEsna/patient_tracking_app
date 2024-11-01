@@ -58,11 +58,40 @@ def add_patient():
        print(f'*** Health problem: {patient_disease}')
        doctor = Doctor.find_by_id(patient_doctor_id)
        if doctor:
-           print(f'***Physition: {doctor.name} {doctor.lastname}')
+           print(f'*** Physition: {doctor.name} {doctor.lastname}')
        else:
            print('*** Physician information not found.')
     except ValueError as e:
         print(f"Error: {e}. Please try again.")
+
+def update_patient():
+    print('Update Patient...')
+    patient_id = input("Enter patient ID.")
+    patient = Patient.find_by_id(patient_id)
+    if patient:
+        patient_first_name = input("Enter patient's first name: ")
+        patient_lastname = input("Enter patient's last name: ")
+        patient_age = input("Enter patient's age: ")
+        patient_disease = input("Enter patient's disease: ")
+        patient_doctor_id = input("Enter patient's doctor ID: ")
+        try:
+            patient.update(patient_first_name, patient_lastname, patient_age, patient_disease, patient_doctor_id)
+            print(f'\nUpdated Patient Information:')
+            print(f'*** {patient_first_name} {patient_lastname}, age: {patient_age}')
+            print(f'*** Health problem: {patient_disease}')
+            doctor = Doctor.find_by_id(patient_doctor_id)
+            if doctor:
+                print(f'*** Physition: {doctor.name} {doctor.lastname}')
+            else:
+                print('Physician information not found.')
+        except ValueError as e:
+            print(f'Error: {e}. Please try again.')
+    else:
+        print('Patient not found')
+       
+
+
+
 
   
 

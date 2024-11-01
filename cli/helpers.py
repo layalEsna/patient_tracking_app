@@ -88,6 +88,23 @@ def update_patient():
             print(f'Error: {e}. Please try again.')
     else:
         print('Patient not found')
+
+def delete_patient():
+    print('Delete Patient...')
+    patient_id = input("Enter patient's ID: ")
+    patient = Patient.find_by_id(patient_id)
+    if patient:
+        confirm = input(f'Are you sure you want to delete {patient.name} {patient.lastname} with ID: {patient_id}? (Y/N): ')
+        if confirm.lower() == 'y':
+            patient.delete(patient_id)
+            print(f'*** Success: Patient {patient.name} {patient.lastname} with ID {patient_id} has been deleted.')
+        elif confirm.lower() == 'n':
+            print('Deletion canceled.')
+        else:
+            print('Invalid input. Deletion canceled.')
+    else:
+        print('Patient not found.')
+
        
 
 

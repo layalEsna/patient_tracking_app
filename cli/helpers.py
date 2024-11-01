@@ -43,6 +43,21 @@ def patients_list():
                print('*** Physician information not found.')
     else:
         print('*** No patients found')
+
+def add_patient():
+    print('Add New Patient...')
+    patient_name = input("Enter patient's name: ")
+    patient_lastname = input("Enter patient's last name: ")
+    patient_age = input("Enter patient's age: ")
+    patient_disease = input("Enter patient's disease: ")
+    patient_doctor_id = input("Enter patient's doctor_id: ")
+    try:
+       new_patient = Patient.create(patient_name, patient_lastname,patient_age, patient_disease, patient_doctor_id)
+       return new_patient
+    except ValueError as e:
+        print(f"Error: {e}. Please try again.")
+
+
+
                
            
-

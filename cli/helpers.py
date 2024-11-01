@@ -46,16 +46,29 @@ def patients_list():
 
 def add_patient():
     print('Add New Patient...')
-    patient_name = input("Enter patient's name: ")
+    patient_first_name = input("Enter patient's first name: ")
     patient_lastname = input("Enter patient's last name: ")
     patient_age = input("Enter patient's age: ")
     patient_disease = input("Enter patient's disease: ")
     patient_doctor_id = input("Enter patient's doctor_id: ")
     try:
-       new_patient = Patient.create(patient_name, patient_lastname,patient_age, patient_disease, patient_doctor_id)
-       return new_patient
+       Patient.create(patient_first_name, patient_lastname,patient_age, patient_disease, patient_doctor_id)
+ 
+       print(f'*** {patient_first_name} {patient_lastname}, age: {patient_age}')
+       print(f'*** Health problem: {patient_disease}')
+       doctor = Doctor.find_by_id(patient_doctor_id)
+       if doctor:
+           print(f'***Physition: {doctor.name} {doctor.lastname}')
+       else:
+           print('*** Physician information not found.')
     except ValueError as e:
         print(f"Error: {e}. Please try again.")
+
+  
+
+
+
+
 
 
 

@@ -1,6 +1,12 @@
 
 # cli.py
 from utils.helpers import *
+import sys
+
+def exit_program():
+    print('Goodbye!')
+    sys.exit()
+    
 def main():
     while True:
         display_welcome_and_instructions()
@@ -22,6 +28,8 @@ def main():
             delete_doctor()
         elif choice == '8':
             delete_patient()
+        elif choice == '9':
+            exit_program()
         else:
             print('Invalid choice, please try again.')
         

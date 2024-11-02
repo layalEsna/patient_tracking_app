@@ -166,7 +166,7 @@ def update(self):
 
 def delete(self):
     sql = '''
-         DELETE patients
+         DELETE FROM patients
          WHERE id = ?
         '''
     CURSOR.execute(sql, (self.id,))

@@ -138,7 +138,7 @@ class Doctor:
 
     def delete(self):
         sql = ''' 
-            DELETE doctors
+            DELETE FROM doctors
             WHERE id = ?
           ''' 
         CURSOR.execute(sql, (self.id,))

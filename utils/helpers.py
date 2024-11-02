@@ -1,7 +1,8 @@
+
 # helpers.py
 
-from models.patient import Patient
-from models.doctor import Doctor
+from ..models.patient import Patient
+from ..models.doctor import Doctor
 
 def display_welcome_and_instructions():
     print("\nWelcome to the Patient Tracking App")
@@ -165,18 +166,5 @@ def delete_doctor():
 
 
 
-       
-
-
-
-
   
 
-
-
-
-
-
-
-               
-           

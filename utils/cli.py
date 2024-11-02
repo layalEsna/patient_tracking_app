@@ -1,6 +1,6 @@
 
 # cli.py
-from helpers import *
+from utils.helpers import *
 def main():
     while True:
         display_welcome_and_instructions()
@@ -29,3 +29,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+    # PYTHONPATH=. python -m utils.cli
+
+

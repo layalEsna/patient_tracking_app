@@ -1,4 +1,4 @@
-# patient.py
+# patient.py  
 
 import sqlite3
 
@@ -6,16 +6,16 @@ CONN = sqlite3.connect('your_database_name.db')  # Change this to your database 
 CURSOR = CONN.cursor()
 
 class Patient:
-    all = []
+    all = {}
     
     def __init__(self, name, lastname, age, disease, doctor_id, id=None):
-        self.id = id or len(Patient.all) + 1
+        self.id = id 
         self.name = name
         self.lastname = lastname
         self.age = age
         self.disease = disease
         self.doctor_id = doctor_id
-        Patient.all.append(self)
+        Patient.all[self.id] = self
 
     @property
     def name(self):
@@ -59,7 +59,7 @@ class Patient:
         if isinstance(disease, str) and len(disease) > 0:
             self._disease = disease
         else:
-            raise ValueError('Disease must be a non-empty string.')
+            raise ValueError('disease must be a non-empty string.')
     
     @property
     def doctor_id(self):
@@ -112,67 +112,68 @@ class Patient:
        patient = cls(name, lastname, age, disease, doctor_id)
        patient.save()
        return patient
-   
-   
-@classmethod
-def instance_from_db(cls, row):
-    '''Return a patient instance based on a database row.'''
-    patient = cls.all.get(row[0])
-    if patient:
-        patient.name = row[1]
-        patient.lastname = row[2]
-        patient.age = row[3]
-        patient.disease = row[4]
-        patient.doctor_id = row[5]
-    else:
-        patient = cls(row[1], row[2],row[3],row[4],row[5])
-        patient.id = row[0]
-        cls.all[patient.id] = patient
+    @classmethod
+    def instance_from_db(cls, row):
+        '''Return a patient instance based on a database row.'''
+        if not row:
+            return None
+        patient = cls.all.get(row[0])
+        if patient:
+            patient.name = row[1]
+            patient.lastname = row[2]
+            patient.age = row[3]
+            patient.disease = row[4]
+            patient.doctor_id = row[5]
+        else:
+            patient = cls(row[1], row[2], row[3], row[4], row[5])
+            patient.id = row[0]
+            cls.all[patient.id] = patient
+        return patient if patient else None
 
-@classmethod
-def find_by_id(cls, id):
-    '''Find and return a patient instance by ID from the patients table.'''
-    sql = '''
+    @classmethod
+    def find_by_id(cls, id):
+        '''Find and return a patient instance by ID from the patients table.'''
+        sql = '''
          SELECT *
          FROM patients 
          WHERE id = ?
 
        '''
-    row = CURSOR.execute(sql, (id,)).fetchone()
-    patient = cls.instance_from_db(row)
-    return patient if patient else None
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        patient = cls.instance_from_db(row)
+        return patient if patient else None
 
-@classmethod
-def get_all(cls):
-    sql = '''
+    @classmethod
+    def get_all(cls):
+        sql = '''
          SELECT *
          FROM patients
        '''
-    patients = []
-    rows = CURSOR.execute(sql).fetchall()
-    for row in rows:
-        patient = cls.instance_from_db(row)
-        patients.append(patient)
-    return patients if patients else None
+        patients = []
+        rows = CURSOR.execute(sql).fetchall()
+        for row in rows:
+            patient = cls.instance_from_db(row)
+            patients.append(patient)
+        return patients if patients else None
 
-def update(self):
-    sql = '''
+    def update(self):
+        sql = '''
          UPDATE patients
          SET name = ?, lastname = ?, age = ?, disease = ?, doctor_id = ?
          WHERE id = ?
         '''
-    CURSOR.execute(sql, (self.name, self.lastname, self.age, self.sdisease, self.doctor_id))
-    CONN.commit()
+        CURSOR.execute(sql, (self.name, self.lastname, self.age, self.disease, self.doctor_id, self.id))
+        CONN.commit()
 
-def delete(self):
-    sql = '''
+    def delete(self):
+        sql = '''
          DELETE FROM patients
          WHERE id = ?
         '''
-    CURSOR.execute(sql, (self.id,))
-    CONN.commit()
-    del type(self).all[self.id]
-    self.id = None
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+        del type(self).all[self.id]
+        self.id = None
 
 
        

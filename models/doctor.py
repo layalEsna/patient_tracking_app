@@ -1,16 +1,17 @@
-# doctor.py
+# doctor.py 
 
 import sqlite3
 CONN = sqlite3.connect('your_database_name.db')
 CURSOR = CONN.cursor()
 class Doctor:
-    all = []
+    all = {}
     def __init__(self, name, lastname, specialty, id=None):
-        self.id = id or len(Doctor.all) +1
+        self.id = id 
         self.name = name
         self.lastname = lastname
         self.specialty = specialty
-        Doctor.all.append(self)
+        if self.id:
+            Doctor.all[self.id] = self
         
     
     @property
@@ -45,21 +46,7 @@ class Doctor:
             self._specialty = specialty
         else:
             raise ValueError('Specialty must be a string longer than 2 characters.')
-        
-    @classmethod
-    def Create_table(cls):
-
-        sql = '''
-             CREATE TABLE IF NOT EXISTS 
-             doctors(
-             id INTEGER PRIMARY KEY,
-             name TEXT,
-             lastname TEXT,
-             specialty TEXT
-             )
-          '''
-        CURSOR.execute(sql)
-        CONN.commit()
+    
 
     @classmethod
     def drop_table(cls):
@@ -69,7 +56,22 @@ class Doctor:
         CURSOR.execute(sql)
         CONN.commit()
 
+   
+    @classmethod
+    def create_table(cls):
+        sql = """
+        CREATE TABLE IF NOT EXISTS doctors (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            lastname TEXT NOT NULL,
+            specialty TEXT NOT NULL
+        )
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
     def save(self):
+        
         '''Insert the Doctor instance into db and save the id.'''
         sql = '''
              INSERT INTO doctors(name, lastname, specialty)
@@ -79,18 +81,23 @@ class Doctor:
         CURSOR.execute(sql, (self.name, self.lastname, self.specialty))
         CONN.commit()
         self.id = CURSOR.lastrowid
-        type(self).all[self.id] = self
+        Doctor.all[self.id] = self
 
     @classmethod
     def create(cls, name, lastname, specialty):
         '''Creates an instance of the class and saves in db.'''
         doctor = cls(name, lastname, specialty)
         doctor.save()
+        return doctor if doctor else None
 
     @classmethod
     def instance_from_db(cls, row):
         '''Return a doctor instance based on a database row.'''
-        doctor = cls.all.get(row[0])
+        if row is None:
+            return None
+
+        doctor_id = row[0]
+        doctor = cls.all.get(doctor_id)
         if doctor:
             doctor.name = row[1]
             doctor.lastname = row[2]
@@ -100,6 +107,7 @@ class Doctor:
             doctor.id = row[0]
             cls.all[doctor.id] = doctor
         return doctor
+    
     @classmethod
     def find_by_id(cls, id):
         '''Find and return a doctor instance by ID from the doctors table.'''
@@ -118,7 +126,7 @@ class Doctor:
         sql = '''
            SELECT  *
            FROM doctors
-           SET 
+           
          '''
         doctors = []
         rows = CURSOR.execute(sql).fetchall()
@@ -143,6 +151,9 @@ class Doctor:
           ''' 
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
+      
         del type(self).all[self.id]
         self.id = None
+
+      
 

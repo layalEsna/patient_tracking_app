@@ -10,7 +10,7 @@ def seed_database():
     Doctor.create_table()
 
     # Check if there are already doctors in the database
-    if not Doctor.get_all():  # Assuming get_all() returns an empty list if no doctors exist
+    if not Doctor.get_all():  
         print("Seeding doctors...")
         doctor_1 = Doctor.create("Dr. Joe", "Walter", "Cardiology")
         doctor_2 = Doctor.create("Dr. Sam", "Smith", "Rheumatology")

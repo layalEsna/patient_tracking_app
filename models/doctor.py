@@ -1,7 +1,7 @@
 # doctor.py 
 
 import sqlite3
-CONN = sqlite3.connect('your_database_name.db')
+CONN = sqlite3.connect('patient_tracking.db')
 CURSOR = CONN.cursor()
 class Doctor:
     all = {}
@@ -135,7 +135,11 @@ class Doctor:
             doctors.append(doctor)
         return doctors if doctors else None
 
-    def update(self):
+    def update(self, name, lastname, specialty):
+        self.name = name
+        self.lastname = lastname
+        self.specialty = specialty
+        
         sql = '''
              UPDATE doctors
              SET name = ?, lastname = ?, specialty = ?
@@ -144,16 +148,36 @@ class Doctor:
         CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
         CONN.commit()
 
-    def delete(self):
+    
+
+    def delete(self, doctor_id):
         sql = ''' 
             DELETE FROM doctors
             WHERE id = ?
-          ''' 
-        CURSOR.execute(sql, (self.id,))
+        ''' 
+        CURSOR.execute(sql, (doctor_id,))
         CONN.commit()
-      
-        del type(self).all[self.id]
-        self.id = None
+
+        if doctor_id in self.__class__.all:
+            del self.__class__.all[doctor_id]  
+            print(f"Doctor with ID {doctor_id} has been deleted.")
+        else:
+            print(f"No doctor found with ID {doctor_id}.")
+
+    
+
+    # def delete(self):
+    #     sql = ''' 
+    #         DELETE FROM doctors
+    #         WHERE id = ?
+    #       ''' 
+    #     CURSOR.execute(sql, (self.id,))
+    #     CONN.commit()
+       
+    #     del type(self).all[self.id]
+    #     self.id = None
+
+            # PYTHONPATH=. python -m utils.cli
 
       
 

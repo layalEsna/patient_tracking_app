@@ -2,7 +2,7 @@
 
 import sqlite3
 
-CONN = sqlite3.connect('your_database_name.db')  # Change this to your database name
+CONN = sqlite3.connect('patient_tracking.db') 
 CURSOR = CONN.cursor()
 
 class Patient:
@@ -45,7 +45,8 @@ class Patient:
     
     @age.setter
     def age(self, age):
-        if isinstance(age, int) and 18 <= age <= 100:  # Fixed the condition here
+        
+        if isinstance(age, int) and 18 <= age <= 100:  
             self._age = age
         else:
             raise ValueError('Age must be an integer between 18 and 100.')
@@ -156,24 +157,32 @@ class Patient:
             patients.append(patient)
         return patients if patients else None
 
-    def update(self):
+    def update(self, name, lastname, age, disease, doctor_id):
         sql = '''
          UPDATE patients
          SET name = ?, lastname = ?, age = ?, disease = ?, doctor_id = ?
          WHERE id = ?
         '''
-        CURSOR.execute(sql, (self.name, self.lastname, self.age, self.disease, self.doctor_id, self.id))
+        CURSOR.execute(sql, (name, lastname, age, disease, doctor_id, self.id))
         CONN.commit()
+        self.name = name
+        self.lastname = lastname
+        self.age = age
+        self.disease = disease
+        self.doctor_id = doctor_id
 
-    def delete(self):
+    def delete(self, patient_id):
         sql = '''
          DELETE FROM patients
          WHERE id = ?
         '''
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (patient_id,))
         CONN.commit()
-        del type(self).all[self.id]
-        self.id = None
+        if patient_id in self.__class__.all:
+            del self.__class__.all[patient_id]
+
+            # PYTHONPATH=. python -m utils.cli
+       
 
 
        

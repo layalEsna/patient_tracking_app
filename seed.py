@@ -1,29 +1,31 @@
-from models.patient import Patient 
+
+from models.patient import Patient
 from models.doctor import Doctor
 
-def seed_data():
-    print("Dropping tables if they exist...")
-    Doctor.drop_table()
-    Patient.drop_table()
-    print("Creating tables...")
+def seed_database():
+    """Seeds the database with initial data and creates necessary tables if they do not already exist."""
     
-
+    # Create tables if they do not exist
+    Patient.create_table()
     Doctor.create_table()
 
-    Patient.create_table()
-    print("Seeding doctors...")
+    # Check if there are already doctors in the database
+    if not Doctor.get_all():  # Assuming get_all() returns an empty list if no doctors exist
+        print("Seeding doctors...")
+        doctor_1 = Doctor.create("Dr. Joe", "Walter", "Cardiology")
+        doctor_2 = Doctor.create("Dr. Sam", "Smith", "Rheumatology")
+        doctor_3 = Doctor.create("Dr. Bob", "Moore", "Oncology")
 
-    doctor1 = Doctor.create(name='Dr. Joe', lastname='Walter', specialty='Cardiology')
-    doctor2 = Doctor.create(name='Dr. Sam', lastname='Smith', specialty='Rheumatologist')
-    doctor3 = Doctor.create(name='Dr. Bob', lastname='More', specialty='Oncologists')
-    print("Seeding patients...")
-    Patient.create(name='Samy', lastname='Von', age=34, disease='Hypertension', doctor_id=doctor1.id)
-    Patient.create(name='Jane', lastname='Sue', age=65, disease='Arthritis', doctor_id=doctor3.id)
-    Patient.create(name='Zane', lastname='Shane', age=47, disease='Diabetes', doctor_id=doctor2.id)
-    print("Database seeding complete.")
+        print("Seeding patients...")
+        Patient.create("John", "Doe", 45, disease="Hypertension", doctor_id=doctor_1.id)
+        Patient.create("Jane", "Smith", 65, disease="Arthritis", doctor_id=doctor_2.id)
+        Patient.create("Emily", "Johnson", 28, disease="Diabetes", doctor_id=doctor_3.id)
+        
+        print("Database seeded successfully.")
+    else:
+        print("Data already exists. Skipping seeding.")
 
 if __name__ == "__main__":
-    seed_data()
-    print("Seeded database")
+    seed_database()
 
-  
+# PYTHONPATH=. python -m utils.cli

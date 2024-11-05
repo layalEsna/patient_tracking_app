@@ -164,20 +164,49 @@ class Doctor:
         else:
             print(f"No doctor found with ID {doctor_id}.")
 
-    
-
-    # def delete(self):
-    #     sql = ''' 
-    #         DELETE FROM doctors
-    #         WHERE id = ?
-    #       ''' 
-    #     CURSOR.execute(sql, (self.id,))
+    # def list_a_doctor_patients(self, doctor_id):
+    #     from patient import Patient
+    #     patients_list = []
+    #     sql = '''
+    #         SELECT * FROM patients
+    #         WHERE doctor_id = ?
+    #      '''
+    #     CURSOR.execute(sql, (doctor_id,))
     #     CONN.commit()
-       
-    #     del type(self).all[self.id]
-    #     self.id = None
+    #     rows = Patient.instance_from_db(doctor_id).fetchall()
+    #     for row in rows:
+    #         patients_list.append(row)
+    #     return patients_list if patients_list else None
+        
+    def list_a_doctor_patients(self, doctor_id):
+        from models.patient import Patient
+        patients_list = []
+        sql = '''
+        SELECT * FROM patients
+        WHERE doctor_id = ?
+         '''
+        CURSOR.execute(sql, (doctor_id,))
+        rows = CURSOR.fetchall()  # Fetch all matching rows
+        if not rows:
+            print('No patient found for this doctor.')
+            return None
 
-            # PYTHONPATH=. python -m utils.cli
+
+        # Transform rows into Patient instances
+        for row in rows:
+            
+            patient = Patient.instance_from_db(row)  # Create Patient instance from each row
+            if patient:
+                patients_list.append(patient)
+            # else:
+            #     print('No patient found for this doctor.')
+                    
+        return patients_list if patients_list else None
+
+     
+
+    
+         # PYTHONPATH=. python -m utils.cli
 
       
 

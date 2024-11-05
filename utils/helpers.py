@@ -39,11 +39,11 @@ def patients_list():
     if patients:
         for patient in patients:
            print(f'*** {patient.name} {patient.lastname}, with ID: {patient.id} age: {patient.age}\n')
-           print(f'Health problem: {patient.disease}\n')
+           print(f'    Health problem: {patient.disease}\n')
 
            doctor = Doctor.find_by_id(patient.doctor_id)
            if doctor:
-               print(f'Physician: {doctor.name} {doctor.lastname}\n')
+               print(f'    Physician: {doctor.name} {doctor.lastname}\n')
             #    print('____________________\n')
            else:
                print('*** Physician information not found.\n')
@@ -61,10 +61,10 @@ def add_patient():
        Patient.create(patient_first_name, patient_lastname,patient_age, patient_disease, patient_doctor_id)
  
        print(f'*** Success {patient_first_name} {patient_lastname}, age: {patient_age}\n')
-       print(f'Health problem: {patient_disease}\n')
+       print(f'    Health problem: {patient_disease}\n')
        doctor = Doctor.find_by_id(patient_doctor_id)
        if doctor:
-           print(f'Physition: {doctor.name} {doctor.lastname} added.\n')
+           print(f'    Physition: {doctor.name} {doctor.lastname} added.\n')
        else:
            print('*** Physician information not found.\n')
     except ValueError as e:
@@ -84,10 +84,10 @@ def update_patient():
             patient.update(patient_first_name, patient_lastname, patient_age, patient_disease, patient_doctor_id)
             print(f'\nUpdated Patient Information:\n')
             print(f'*** Success {patient_first_name} {patient_lastname}, age: {patient_age} updated.\n')
-            print(f'***  Success Health problem: {patient_disease} updated.\n')
+            print(f'    Health problem: {patient_disease} updated.\n')
             doctor = Doctor.find_by_id(patient_doctor_id)
             if doctor:
-                print(f'***  Success Physition: {doctor.name} {doctor.lastname} Updated.\n')
+                print(f'    Physition: {doctor.name} {doctor.lastname} Updated.\n')
             else:
                 print('Physician information not found.\n')
         except ValueError as e:
@@ -169,6 +169,21 @@ def delete_doctor():
     else:
         print('doctor not found.\n')
 
+
+def get_a_doctor_patients():
+    patients_list = []
+    doc_id = int(input("Enter doctor's ID: "))
+    if doc_id:
+        patients = Patient.get_all()
+        for patient in patients:
+            if patient.doctor_id == doc_id:
+               patients_list.append(f'{patient.name} {patient.lastname}')
+
+        # return patients_list if patients_list else None
+        if patients_list:
+            print(f'Patients for Doctor ID, {doc_id}:\n')
+            for patients in patients_list:
+                print(patients) 
       
 
 

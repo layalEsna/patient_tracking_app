@@ -23,7 +23,7 @@ class Patient:
     
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name) > 2:
+        if isinstance(name, str) and len(name) > 0:
             self._name = name
         else:
             raise ValueError('Name must be a string longer than 2 characters.')
@@ -34,7 +34,7 @@ class Patient:
     
     @lastname.setter
     def lastname(self, lastname):
-        if isinstance(lastname, str) and len(lastname) > 2:
+        if isinstance(lastname, str) and len(lastname) > 0:
             self._lastname = lastname
         else:
             raise ValueError('Lastname must be a string longer than 2 characters.')
@@ -88,6 +88,7 @@ class Patient:
           '''
         CURSOR.execute(sql)
         CONN.commit()
+
     @classmethod
     def drop_table(cls):
         sql = '''
@@ -150,37 +151,33 @@ class Patient:
          SELECT *
          FROM patients
        '''
-        patients = []
+        
         rows = CURSOR.execute(sql).fetchall()
-        for row in rows:
-            patient = cls.instance_from_db(row)
-            patients.append(patient)
-        return patients if patients else None
+        return [cls.instance_from_db(row) for row in rows]
 
-    def update(self, name, lastname, age, disease, doctor_id):
+   
+    def update(self):
         sql = '''
-         UPDATE patients
-         SET name = ?, lastname = ?, age = ?, disease = ?, doctor_id = ?
-         WHERE id = ?
+          UPDATE patients 
+          SET name = ?, lastname = ?, age = ?, disease = ?, doctor_id = ?
+          WHERE id = ?
+   
         '''
-        CURSOR.execute(sql, (name, lastname, age, disease, doctor_id, self.id))
+        CURSOR.execute(sql, (self.name, self.lastname,self.age, self.disease, self.doctor_id, self.id,))
         CONN.commit()
-        self.name = name
-        self.lastname = lastname
-        self.age = age
-        self.disease = disease
-        self.doctor_id = doctor_id
 
-    def delete(self, patient_id):
+    
+
+    def delete(self):
         sql = '''
          DELETE FROM patients
          WHERE id = ?
-        '''
-        CURSOR.execute(sql, (patient_id,))
+         '''
+        CURSOR.execute(sql, (self.id, ))
         CONN.commit()
-        if patient_id in self.__class__.all:
-            del self.__class__.all[patient_id]
 
+        del type(self).all[self.id] 
+        self.id = None
             # PYTHONPATH=. python -m utils.cli
        
 

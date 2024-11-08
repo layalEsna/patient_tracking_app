@@ -5,51 +5,7 @@
 from models.patient import Patient
 from models.doctor import Doctor
 
-# from ..models.patient import Patient 
-# from ..models.doctor import Doctor
-
-# def display_welcome_and_instructions():
-#     print("Welcome to the Patient Tracking App")
-
-#     print("Please select an option:")
-
-#     print("1- view doctors' information\n")
-    
-#     print("2- Update doctor information\n")
-    
-#     print("3- Add a new doctor")
-    
-#     print("4- View patients' information")
-    
-#     print("5- Update patient information")
-    
-#     print("6- Add a new patient")
-    
-#     print("7- Delete a doctor")
-    
-#     print("8- Delete a patient")
-    
-#     print("9- Exit")
-
-#     print("Enter your choice number: ")
-
-def patients_list():
-    print("Patients Information\n")
-    patients = Patient.get_all()
-    if patients:
-        for patient in patients:
-           print(f'*** {patient.name} {patient.lastname}, with ID: {patient.id} age: {patient.age}\n')
-           print(f'    Health problem: {patient.disease}\n')
-
-           doctor = Doctor.find_by_id(patient.doctor_id)
-           if doctor:
-               print(f'    Physician: {doctor.name} {doctor.lastname}\n')
-            #    print('____________________\n')
-           else:
-               print('*** Physician information not found.\n')
-    else:
-        print('*** No patients found\n')
-
+  
 def add_patient():
     print('Add New Patient...\n')
     patient_first_name = input("Enter patient's first name: \n")
@@ -70,53 +26,87 @@ def add_patient():
     except ValueError as e:
         print(f"Error: {e}. Please try again.\n")
 
-def update_patient():
-    print('Update Patient...\n')
-    patient_id = input("Enter patient ID: \n")
-    patient = Patient.find_by_id(patient_id)
-    if patient:
-        patient_first_name = input("Enter patient's first name: \n")
-        patient_lastname = input("Enter patient's last name: \n")
-        patient_age = int(input("Enter patient's age: \n"))
-        patient_disease = input("Enter patient's disease: \n")
-        patient_doctor_id = int(input("Enter patient's doctor ID: \n"))
-        try:
-            patient.update(patient_first_name, patient_lastname, patient_age, patient_disease, patient_doctor_id)
-            print(f'\nUpdated Patient Information:\n')
-            print(f'*** Success {patient_first_name} {patient_lastname}, age: {patient_age} updated.\n')
-            print(f'    Health problem: {patient_disease} updated.\n')
-            doctor = Doctor.find_by_id(patient_doctor_id)
-            if doctor:
-                print(f'    Physition: {doctor.name} {doctor.lastname} Updated.\n')
-            else:
-                print('Physician information not found.\n')
-        except ValueError as e:
-            print(f'Error: {e}. Please try again.\n')
+def delete_patient(patient):
+    """Deletes a specified patient after confirmation."""
+    confirm = input(f'Are you sure you want to delete {patient.name} {patient.lastname}? (Y/N): ').lower()
+    if confirm == 'y':
+        patient.delete()
+        print(f'*** Success: Patient {patient.name} {patient.lastname} has been deleted.\n')
+    elif confirm == 'n':
+        print('Deletion canceled.\n')
     else:
-        print('Patient not found\n')
+        print('Invalid input. Deletion canceled.\n')
 
-def delete_patient():
-    print('Delete Patient...\n')
-    patient_id = input("Enter patient's ID: \n")
+def update_patient(patient_id):
+   
     patient = Patient.find_by_id(patient_id)
-    if patient:
-        confirm = input(f'Are you sure you want to delete {patient.name} {patient.lastname} with ID: {patient_id}? (Y/N): \n')
-        if confirm.lower() == 'y':
-            patient.delete(patient_id)
-            print(f'*** Success: Patient {patient.name} {patient.lastname} with ID {patient_id} has been deleted.\n')
-        elif confirm.lower() == 'n':
-            print('Deletion canceled.\n')
+    if not patient:
+        print('\n    No patient found.\n')
+        return
+   
+    try:
+        name = input(f"\nUpdate patient's name ({patient.name}): ") or patient.name
+        patient.name = name
+    except ValueError as e:
+        print(f"Error: {e}")
+    
+    try:
+        lastname = input(f"Update patient's last name ({patient.lastname}): ") or patient.lastname
+        patient.lastname = lastname
+    except ValueError as e:
+        print(f"Error: {e}")
+    
+    try:
+        age_input = input(f"Update patient's age ({patient.age}): ")
+        age = int(age_input) if age_input else patient.age
+        patient.age = age
+    except ValueError as e:
+        print(f"Error: {e}")
+    
+    try:
+        disease = input(f"Update patient's disease ({patient.disease}): ") or patient.disease
+        patient.disease = disease
+    except ValueError as e:
+        print(f"Error: {e}")
+       
+        
+    patient.update()
+
+    print(f'\n**** Success: Patient {patient.name} {patient.lastname}, age: {patient.age}\n')
+    print(f'\n    Health condition: {patient.disease}')
+    if patient.doctor_id:
+        doctor = Doctor.find_by_id(patient.doctor_id)
+        if doctor:
+            try:
+                d_name = input(f"Update doctor's name ({doctor.name}): ") or doctor.name
+                doctor.name = d_name
+            except ValueError as e:
+                print(f"Error: {e}")
+            
+            try:
+                d_lastname = input(f"Update doctor's last name ({doctor.lastname}): ") or doctor.lastname
+                doctor.lastname = d_lastname
+            except ValueError as e:
+                print(f"Error: {e}")
+            
+            try:
+                d_specialty = input(f"Update doctor's specialty ({doctor.specialty}): ") or doctor.specialty
+                doctor.specialty = d_specialty
+            except ValueError as e:
+                print(f"Error: {e}")
+
+            doctor.update()
+            print(f'Doctor updated: {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}')
         else:
-            print('Invalid input. Deletion canceled.\n')
-    else:
-        print('Patient not found.\n')
+            print('\n    Doctor not found.')
 
+    
 def doctors_list():
     print("doctors Information\n")
     doctors = Doctor.get_all()
     if doctors:
         for doctor in doctors:
-           print(f'*** {doctor.name} {doctor.lastname}, with ID: {doctor.id} Specialty: {doctor.specialty}\n')
+           print(f'*** {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}\n')
           
     else:
         print('*** No doctors found\n')
@@ -169,24 +159,12 @@ def delete_doctor():
     else:
         print('doctor not found.\n')
 
-
 def get_a_doctor_patients():
-    patients_list = []
-    doc_id = int(input("Enter doctor's ID: "))
-    if doc_id:
-        patients = Patient.get_all()
-        for patient in patients:
-            if patient.doctor_id == doc_id:
-               patients_list.append(f'{patient.name} {patient.lastname}')
+    pass
 
-        # return patients_list if patients_list else None
-        if patients_list:
-            print(f'Patients for Doctor ID, {doc_id}:\n')
-            for patients in patients_list:
-                print(patients) 
       
 
-
+# PYTHONPATH=. python -m utils.cli
 
   
 

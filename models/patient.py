@@ -1,9 +1,18 @@
 # patient.py  
 
+# import sqlite3
+
+# CONN = sqlite3.connect('patient_tracking.db') 
+# CURSOR = CONN.cursor()
+
+# from utils.db import Database
+
+# patient.py 
 import sqlite3
 
 CONN = sqlite3.connect('patient_tracking.db') 
 CURSOR = CONN.cursor()
+
 
 class Patient:
     all = {}
@@ -107,13 +116,57 @@ class Patient:
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
+
+    @classmethod
+    def get_by_name(cls, name, lastname):
+        sql = '''
+        SELECT * FROM patients
+        WHERE name = ? AND lastname = ?
+        '''
+        cursor = CONN.cursor()
+        cursor.execute(sql, (name, lastname))
+        result = cursor.fetchone()
+        cursor.close()
+
+        if result:
+            # Unpack result assuming it includes `id`, `name`, `lastname`, `specialty`
+            id, name, lastname, specialty = result
+            return cls(name, lastname, specialty, id=id)
+        return None
+    
+    # @classmethod
+    # def create(cls, name, lastname, disease, doctor_id=None):
+    #     existing_patient = cls.get_by_name(name, lastname)
+    #     if existing_patient:
+    #         return existing_patient
+    #     patient = cls(name, lastname, disease, doctor_id, id)
+    #     if doctor_id:
+    #        patient.doctor_id = doctor_id
+           
+    #     patient.save()
+    #     return patient if patient else None
     
     @classmethod
-    def create(cls, name, lastname, age, disease, doctor_id):
-       '''Creates instance and saves it in the db.'''
-       patient = cls(name, lastname, age, disease, doctor_id)
-       patient.save()
-       return patient
+    def create(cls, name, lastname,age, disease, doctor_id=None):
+    # Check if the patient already exists
+        existing_patient = cls.get_by_name(name, lastname)
+        if existing_patient:
+            return existing_patient
+    
+    # Create a new patient instance, passing doctor_id only if it's provided
+        patient = cls(name=name, lastname=lastname,age=age, disease=disease, doctor_id=doctor_id)
+    
+    # Save the patient to the database
+        patient.save()
+    
+    # If doctor_id is provided, associate it with the patient
+        # if doctor_id:
+        #     patient.doctor_id = doctor_id  # Ensure doctor_id is set correctly
+    
+        return patient
+
+
+    
     @classmethod
     def instance_from_db(cls, row):
         '''Return a patient instance based on a database row.'''
@@ -178,7 +231,10 @@ class Patient:
 
         del type(self).all[self.id] 
         self.id = None
-            # PYTHONPATH=. python -m utils.cli
+
+   
+
+#             # PYTHONPATH=. python -m utils.cli
        
 
 

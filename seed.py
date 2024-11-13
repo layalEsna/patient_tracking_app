@@ -1,10 +1,5 @@
 # seed.py
-# from models.patient import Patient
-# from models.doctor import Doctor
-# from utils.db import Database
 
-
-# seed.py
 
 from models.patient import Patient
 from models.doctor import Doctor

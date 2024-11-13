@@ -1,13 +1,4 @@
-# patient.py  
 
-# import sqlite3
-
-# CONN = sqlite3.connect('patient_tracking.db') 
-# CURSOR = CONN.cursor()
-
-# from utils.db import Database
-
-# patient.py 
 import sqlite3
 
 CONN = sqlite3.connect('patient_tracking.db') 
@@ -32,7 +23,7 @@ class Patient:
     
     @name.setter
     def name(self, name):
-        if isinstance(name, str) and len(name) > 0:
+        if isinstance(name, str) and len(name) > 2:
             self._name = name
         else:
             raise ValueError('Name must be a string longer than 2 characters.')
@@ -43,7 +34,7 @@ class Patient:
     
     @lastname.setter
     def lastname(self, lastname):
-        if isinstance(lastname, str) and len(lastname) > 0:
+        if isinstance(lastname, str) and len(lastname) > 2:
             self._lastname = lastname
         else:
             raise ValueError('Lastname must be a string longer than 2 characters.')
@@ -66,7 +57,7 @@ class Patient:
     
     @disease.setter
     def disease(self, disease):
-        if isinstance(disease, str) and len(disease) > 0:
+        if isinstance(disease, str) and len(disease) > 2:
             self._disease = disease
         else:
             raise ValueError('disease must be a non-empty string.')
@@ -77,7 +68,7 @@ class Patient:
     
     @doctor_id.setter
     def doctor_id(self, doctor_id):
-        if isinstance(doctor_id, int) and doctor_id > 0:
+        if isinstance(doctor_id, int):
             self._doctor_id = doctor_id
         else:
             raise ValueError('Doctor ID must be a positive integer.')
@@ -120,49 +111,29 @@ class Patient:
     @classmethod
     def get_by_name(cls, name, lastname):
         sql = '''
-        SELECT * FROM patients
-        WHERE name = ? AND lastname = ?
-        '''
-        cursor = CONN.cursor()
-        cursor.execute(sql, (name, lastname))
-        result = cursor.fetchone()
-        cursor.close()
-
-        if result:
-            # Unpack result assuming it includes `id`, `name`, `lastname`, `specialty`
-            id, name, lastname, specialty = result
-            return cls(name, lastname, specialty, id=id)
-        return None
+          SELECT * FROM patients
+          WHERE name = ? AND lastname = ?
+         '''
+        row = CURSOR.execute(sql, (name, lastname))
+        return cls.instance_from_db(row)
+        
     
-    # @classmethod
-    # def create(cls, name, lastname, disease, doctor_id=None):
-    #     existing_patient = cls.get_by_name(name, lastname)
-    #     if existing_patient:
-    #         return existing_patient
-    #     patient = cls(name, lastname, disease, doctor_id, id)
-    #     if doctor_id:
-    #        patient.doctor_id = doctor_id
-           
-    #     patient.save()
-    #     return patient if patient else None
+    
     
     @classmethod
     def create(cls, name, lastname,age, disease, doctor_id=None):
-    # Check if the patient already exists
+    
         existing_patient = cls.get_by_name(name, lastname)
         if existing_patient:
             return existing_patient
     
-    # Create a new patient instance, passing doctor_id only if it's provided
+  
         patient = cls(name=name, lastname=lastname,age=age, disease=disease, doctor_id=doctor_id)
     
-    # Save the patient to the database
+    
         patient.save()
     
-    # If doctor_id is provided, associate it with the patient
-        # if doctor_id:
-        #     patient.doctor_id = doctor_id  # Ensure doctor_id is set correctly
-    
+        
         return patient
 
 

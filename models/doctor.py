@@ -1,12 +1,4 @@
-# doctor.py 
-
-# import sqlite3
-# CONN = sqlite3.connect('patient_tracking.db')
-# CURSOR = CONN.cursor()
-# from utils.db import Database
-
-# doctor.py 
-
+# doctor.py
 import sqlite3
 
 CONN = sqlite3.connect('patient_tracking.db') 
@@ -40,7 +32,7 @@ class Doctor:
         return self._lastname
     @lastname.setter
     def lastname(self, lastname):
-        if isinstance(lastname, str) and len(lastname) > 2:
+        if isinstance(lastname, str) and len(lastname) > 0:
             self._lastname = lastname
         else:
             raise ValueError('Lastname must be a string longer than 2 characters.')
@@ -51,7 +43,7 @@ class Doctor:
         return self._specialty
     @specialty.setter
     def specialty(self, specialty):
-        if isinstance(specialty, str) and len(specialty) > 2:
+        if isinstance(specialty, str) and len(specialty) > 0:
             self._specialty = specialty
         else:
             raise ValueError('Specialty must be a string longer than 2 characters.')
@@ -92,62 +84,16 @@ class Doctor:
         self.id = CURSOR.lastrowid
         Doctor.all[self.id] = self
 
-    # models/doctor.py
 
-
-    
-
-
-    
-    # @classmethod
-    # def create(cls, name, lastname, specialty):
-    #     existing_doctor = cls.find_by_id(id)
-    #     if existing_doctor:
-    #         return existing_doctor
-
-    #     sql = '''
-    #     INSERT INTO doctors (name, lastname, specialty)
-    #     VALUES (?, ?, ?)
-    #     '''
-    #     cursor = CONN.cursor()
-    #     cursor.execute(sql, (name, lastname, specialty))
-    #     doctor_id = cursor.lastrowid
-    #     CONN.commit()
-    #     cursor.close()
-
-    #     return cls.find_by_id(doctor_id)
-    
     @classmethod
     def get_by_name(cls, name, lastname):
         sql = '''
-        SELECT * FROM doctors
-        WHERE name = ? AND lastname = ?
-        '''
-        cursor = CONN.cursor()
-        cursor.execute(sql, (name, lastname))
-        result = cursor.fetchone()
-        cursor.close()
+            SELECT * FROM doctors
+            WHERE name = ? AND lastname = ?
+         '''
+        row = CURSOR.execute(sql, (name, lastname)).fetchone()
+        return cls.instance_from_db(row)
 
-        if result:
-            # Unpack result assuming it includes `id`, `name`, `lastname`, `specialty`
-            id, name, lastname, specialty = result
-            return cls(name, lastname, specialty, id=id)
-        return None
-
-
-    
-
-    
-
-    # @classmethod
-    # def create(cls, name, lastname, specialty):
-    #     '''Creates an instance of the class and saves in db.'''
-    #     existing_doctor = cls.find_by_id()
-    #     if existing_doctor:
-    #         return existing_doctor
-    #     doctor = cls(name, lastname, specialty)
-    #     doctor.save()
-    #     return doctor if doctor else None
 
     @classmethod
     def create(cls, name, lastname, specialty):
@@ -203,24 +149,10 @@ class Doctor:
         rows = CURSOR.execute(sql).fetchall()
         return[cls.instance_from_db(row) for row in rows]
 
-    # def update(self, name,lastname, specialty):
-        
-    #     self.name = name
-    #     self.lastname = lastname
-    #     self.specialty = specialty
-        
-    #     sql = '''
-    #          UPDATE doctors
-    #          SET name = ?, lastname = ?, specialty = ?
-    #          WHERE id = ?
-    #      '''
-    #     CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
-    #     CONN.commit()
+    
 
     def update(self, name=None, lastname=None, specialty=None):
         '''Update the doctor's details and save to the database.'''
-    
-        # Update attributes only if a new value is provided
         if name:
             self.name = name
         if lastname:
@@ -233,9 +165,9 @@ class Doctor:
          SET name = ?, lastname = ?, specialty = ?
          WHERE id = ?
          '''
-        # Execute the update command with the updated details
+        
         CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
-        CONN.commit()  # Make sure to commit changes to save them permanently
+        CONN.commit()  
 
 
     
@@ -263,7 +195,7 @@ class Doctor:
          '''
         rows = CURSOR.execute(sql, (self.id,)).fetchall()
         if not rows:
-            print('No patient found for this doctor.')
+            print('\n    No patient found for this doctor.\n')
             return None
 
         return [Patient.instance_from_db(row) for row in rows]

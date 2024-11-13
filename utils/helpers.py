@@ -172,13 +172,14 @@ def add_doctor():
 def update_doctor(doctor):
     print('\n    Update Doctor...\n')
     
+    doctor = Doctor.find_by_id(doctor.id)
     
     # doctor = Doctor.find_by_id(doctor.id)
     if doctor:
-        
-        doctor_first_name = input(f"\n    Update doctor's first name ({doctor.name}):  ") or doctor.name
-        doctor_lastname = input(f"\n    Update doctor's last name ({doctor.lastname}):  ") or doctor.lastname
-        doctor_specialty = input(f"\n    Update doctor's specialty ({doctor.specialty}):  ") or doctor.specialty
+        doctor_first_name = input(f"(\n    Enter doctor's name: {doctor.name}) ") or doctor.name
+        doctor_lastname = input(f"(\n    Enter doctor's last name: {doctor.lastname}) ") or doctor.lastname
+        doctor_specialty = input(f"(\n    Enter doctor's name: {doctor.specialty}) ") or doctor.specialty
+
         try:
             doctor.update(doctor_first_name, doctor_lastname, doctor_specialty)
            

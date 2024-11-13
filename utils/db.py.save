@@ -1,0 +1,34 @@
+import sqlite3
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CONN = sqlite3.connect(os.path.join(BASE_DIR, 'medical_records.db'))
+CURSOR = CONN.cursor()
+
+# Example: Create a table (if not exists)
+CURSOR.execute('''
+    CREATE TABLE IF NOT EXISTS patients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        age INTEGER,
+        disease TEXT
+    )
+''')
+
+# Example: Insert a new patient
+CURSOR.execute("INSERT INTO patients (name, age, disease) VALUES (?, ?, 
+?)", ('John Doe', 30, 'Flu'))
+
+# Example: Fetch all patients
+CURSOR.execute("SELECT * FROM patients")
+patients = CURSOR.fetchall()
+for patient in patients:
+    print(patient)
+
+# Remember to commit changes and close the connection
+CONN.commit()
+CONN.close()
+
+utils/db.py
+
+

@@ -6,53 +6,159 @@
 from models.patient import Patient
 from models.doctor import Doctor
 
+#   Invalid input. Deletion canceled.
+  
+
+# def add_patient():
+#     print('\n    Add New Patient...')
+    
+    
+#     patient_first_name = input("\n    Enter patient's first name: ")
+#     patient_lastname = input("\n    Enter patient's last name: ")
+#     patient_age = None
+#     while patient_age is None:
+#      try:
+   
+#         patient_age = int(input("\n    Enter patient's age: "))
+#         if not (18 <= patient_age <= 100):
+#             print('\n    Age must be between 18 and 100 inclusive.')
+#             patient_age = None
+#      except ValueError:
+
+#         print('\n    Invalid input. Please Enter a number for age.')
+
+
+#     patient_disease = input("\n    Enter patient's disease: ")
+
+
+#     doctor_name = input("\n    Enter the doctor's first name: ")
+#     doctor_lastname = input("\n    Enter the doctor's last name: ")
+#     doctor_specialty = input("\n    Enter the doctor's specialty: ")
+    
+#     doctor = Doctor.get_by_name(doctor_name, doctor_lastname)
+#     if not doctor:
+      
+#         doctor = Doctor.create(doctor_name, doctor_lastname, doctor_specialty)
+#         # print('\n    ********************')
+#         # print(f'\n    Success: New Physician: {doctor.name} {doctor.lastname} Specialty: {doctor.specialty} added.')
+#         # print('\n    ********************')
+#     else:
+#         print('\n    ********************')
+#         print(f'\n    Physician: {doctor.name} {doctor.lastname} found and assigned to the patient.')
+#         # print('\n    ********************')
+ 
+#     new_patient = Patient.create(
+#         name=patient_first_name,
+#         lastname=patient_lastname,
+#         age=patient_age,
+#         disease=patient_disease,
+#         doctor_id=doctor.id
+#     )
+
+
+
+#     if new_patient:
+#         # print('\n      ********************')
+#         print(f'\n    Success: New Patient: {new_patient.name} {new_patient.lastname}, age: {new_patient.age}, Health Condition: {new_patient.disease}')
+#         print(f'\n    Assigned Physician: {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}')
+#         print('\n    ********************')
+#     else:
+#         print('\n    Failed to create the new patient.')
+
+
+
 def add_patient():
-    print('\n    Add New Patient...')
-    
-    
-    patient_first_name = input("\n    Enter patient's first name: ")
-    patient_lastname = input("\n    Enter patient's last name: ")
-    patient_age = int(input("\n    Enter patient's age: "))
-    patient_disease = input("\n    Enter patient's disease: ")
+    while True:
+        try:
 
+            patient_name = input("\n    Enter patient's name: ")
+            if not isinstance(patient_name, str) or len(patient_name) < 2:
+                raise ValueError('\n    Name must be a string and more than 2 characters.')
+            break
+        except ValueError as e:
+            print(e)
+    while True:
+        try:
+            patient_lastname = input("\n    Enter patient's last name: ")
+            if not isinstance(patient_lastname, str) or len(patient_lastname) < 2:
+                raise ValueError('\n    Last name must be a string and more than 2 characters.')
+            break
+        except ValueError as e:
+            print(e)
+    while True:
+        try:
+            patient_age = int(input("\n    Enter patient's age: "))
+            if not (18 <= patient_age <= 100):
+                raise ValueError('\n    Age must be a number between 18 and 100 inclusive.')
+            break
+        except ValueError:
+            print('\n    Age must be a number between 18 and 100 inclusive....')
+        
+    while True:
+        try:
+            disease = input("\n    Enter patient's disease: ")
+            if not isinstance(disease, str) or len(disease) < 2:
+                raise ValueError('\n    Disease must be a string and more than 2 characters.')
+            break
+        except ValueError as e:
+            print(e)
+    while True:
+        try:
+            doctor_name = input("\n    Enter doctor's name: ") 
+            if not isinstance(doctor_name, str) or len(doctor_name) < 2:
+                raise ValueError('\n    Name must be a string and more than 2 characters.')
+            break
+        except ValueError as e:
+            print(e)
+    while True:
+        try:
+            doctor_lastname = input("\n    Enter doctor's last name: ") 
+            if not isinstance(doctor_lastname, str) or len(doctor_lastname) < 2:
+                raise ValueError('\n     Last name must be a string and more than 2 characters.')
+            break
+        except ValueError as e:
+            print(e)
 
-    doctor_name = input("\n    Enter the doctor's first name: ")
-    doctor_lastname = input("\n    Enter the doctor's last name: ")
-    doctor_specialty = input("\n    Enter the doctor's specialty: ")
+    while True:
+        try:
+            specialty =  input("\n    Enter doctor's specialty: ") 
+            if not isinstance(specialty, str) or len(specialty) < 2:
+                raise ValueError('\n    Specialty must be a string and more than 2 characters.')
+            break
+        except ValueError as e:
+            print(e)
     
+
     doctor = Doctor.get_by_name(doctor_name, doctor_lastname)
     if not doctor:
-      
-        doctor = Doctor.create(doctor_name, doctor_lastname, doctor_specialty)
-        print('\n    ********************')
-        print(f'\n    Success: New Physician: {doctor.name} {doctor.lastname} Specialty: {doctor.specialty} added.')
-        print('\n    ********************')
-    else:
-        print('\n    ********************')
-        print(f'\n    Physician: {doctor.name} {doctor.lastname} found and assigned to the patient.')
-        print('\n    ********************')
- 
-    new_patient = Patient.create(
-        name=patient_first_name,
-        lastname=patient_lastname,
-        age=patient_age,
-        disease=patient_disease,
-        doctor_id=doctor.id
-    )
+        doctor = Doctor.create(doctor_name, doctor_lastname, specialty)
+        print(f'\n    Success: New Doctor: {doctor_name} {doctor_lastname}: Specialty: {specialty} added.')
 
-
+    new_patient = Patient.create(patient_name, patient_lastname, patient_age, disease,doctor.id)
+        
 
     if new_patient:
-        print('\n      ********************')
-        print(f'\n      Success: New Patient: {new_patient.name} {new_patient.lastname}, age: {new_patient.age}, Health Condition: {new_patient.disease}')
-        print(f'\n      Assigned Physician: {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}')
-        print('\n      ********************')
-    else:
-        print('\n    Failed to create the new patient.')
+                    print('\n    ********************')
+                    print(f'\n    Success: New Patient: {patient_name} {patient_lastname}, Age {patient_age} Health Condition: {disease} added')
+                    print(f'\n    Assigned doctor: Dr. {doctor_name} {doctor_lastname}, Specialty: {specialty}')
+                    print('\n    ********************')
+           
+    # else: 
+    #     Doctor.create(doctor_name, doctor_lastname, specialty)
+    #     print('\n    ********************')
+    #     print(f'\n    Success: New Patient: {patient_name} {patient_lastname}, Age {patient_age} added')
+
+    #     print(f'\n    New doctor {doctor_name}, {doctor_lastname}, Specialty: {specialty} was assighned to the patient.')
+    #     print('\n    ********************')
+    
+
+
+
+
 
 def delete_patient(patient):
     """Deletes a specified patient after confirmation."""
-    confirm = input(f'    Are you sure you want to delete {patient.name} {patient.lastname}? (Y/N): ').lower()
+    confirm = input(f'\n    Are you sure you want to delete {patient.name} {patient.lastname}? (Y/N): ').lower()
     if confirm == 'y':
         patient.delete()
         print('\n      ********************')

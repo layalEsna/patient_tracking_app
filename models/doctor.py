@@ -32,7 +32,7 @@ class Doctor:
         return self._lastname
     @lastname.setter
     def lastname(self, lastname):
-        if isinstance(lastname, str) and len(lastname) > 0:
+        if isinstance(lastname, str) and len(lastname) > 2:
             self._lastname = lastname
         else:
             raise ValueError('Lastname must be a string longer than 2 characters.')
@@ -43,7 +43,7 @@ class Doctor:
         return self._specialty
     @specialty.setter
     def specialty(self, specialty):
-        if isinstance(specialty, str) and len(specialty) > 0:
+        if isinstance(specialty, str) and len(specialty) > 2:
             self._specialty = specialty
         else:
             raise ValueError('Specialty must be a string longer than 2 characters.')

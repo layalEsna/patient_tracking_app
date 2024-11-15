@@ -114,7 +114,7 @@ class Patient:
           SELECT * FROM patients
           WHERE name = ? AND lastname = ?
          '''
-        row = CURSOR.execute(sql, (name, lastname))
+        row = CURSOR.execute(sql, (name, lastname)).fetchone()
         return cls.instance_from_db(row)
         
     
@@ -205,7 +205,7 @@ class Patient:
 
    
 
-#             # PYTHONPATH=. python -m utils.cli
+       # PYTHONPATH=. python -m utils.cli
        
 
 

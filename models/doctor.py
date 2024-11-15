@@ -1,9 +1,9 @@
 # doctor.py
 import sqlite3
-
+#  Doctor with ID 
 CONN = sqlite3.connect('patient_tracking.db') 
 CURSOR = CONN.cursor()
-
+# No pa
 class Doctor:
     all = {}
     def __init__(self, name, lastname, specialty, id=None):
@@ -182,7 +182,6 @@ class Doctor:
 
         if doctor_id in cls.all:
             del cls.all[doctor_id]  
-            print(f"\n    Doctor with ID {doctor_id} has been deleted.\n")
         else:
             print(f"\n    No doctor found with ID {doctor_id}.")
 
@@ -194,10 +193,7 @@ class Doctor:
            WHERE doctor_id = ?
          '''
         rows = CURSOR.execute(sql, (self.id,)).fetchall()
-        if not rows:
-            print('\n    No patient found for this doctor.\n')
-            return None
-
+        
         return [Patient.instance_from_db(row) for row in rows]
     
 
@@ -207,5 +203,6 @@ class Doctor:
     
     #     #  PYTHONPATH=. python -m utils.cli
 
-      
+    #   Sham Moore, Specialty: Oncology
+
 

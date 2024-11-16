@@ -149,22 +149,29 @@ class Doctor:
         rows = CURSOR.execute(sql).fetchall()
         return[cls.instance_from_db(row) for row in rows]
 
-    
-
-    def update(self, name=None, lastname=None, specialty=None):
-        '''Update the doctor's details and save to the database.'''
-        if name:
-            self.name = name
-        if lastname:
-            self.lastname = lastname
-        if specialty:
-            self.specialty = specialty
-
+    def update(self):
         sql = '''
-         UPDATE doctors
-         SET name = ?, lastname = ?, specialty = ?
-         WHERE id = ?
+          UPDATE doctors
+          SET name = ? lastname = ? specialty = ?
+          where id = ?
          '''
+        CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
+        CONN.commit()
+
+    # def update(self, name=None, lastname=None, specialty=None):
+    #     '''Update the doctor's details and save to the database.'''
+    #     if name:
+    #         self.name = name
+    #     if lastname:
+    #         self.lastname = lastname
+    #     if specialty:
+    #         self.specialty = specialty
+
+    #     sql = '''
+    #      UPDATE doctors
+    #      SET name = ?, lastname = ?, specialty = ?
+    #      WHERE id = ?
+    #      '''
         
         CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
         CONN.commit()  

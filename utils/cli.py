@@ -45,7 +45,7 @@ def patient_enumerate_list():
                 action = input(f'\n    Enter "u" to update {selected_patient.name} {selected_patient.lastname} or "d" to delete the patient: ').lower()
                 
                 if action == 'u':
-                    update_patient(selected_patient.id)
+                    update_patient(selected_patient)
                     break
                 elif action == 'd':
                     delete_patient(selected_patient)
@@ -67,7 +67,7 @@ def patient_enumerate_list():
 def patients_info():
     while True:
         print('\n    >>>>>> Patients Menu...')
-        print('    Press " m " to go back to the main menu.\n')
+        print('\n    Press " m " to go back to the main menu.')
 
         print("\n    pl) Patients List:\n")
         
@@ -202,4 +202,6 @@ if __name__ == "__main__":
     seed_database()
     main_menu()
 
-# PYTHONPATH=. python -m utils.cli   bbbbbb
+# PYTHONPATH=. python -m utils.cli   Selected: Susan Abad, Age: 43, Disease: GHHJ
+
+    # Physician: Sham Moore      9- www www, Specialty: www

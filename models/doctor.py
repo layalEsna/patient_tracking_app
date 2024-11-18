@@ -152,7 +152,7 @@ class Doctor:
     def update(self):
         sql = '''
           UPDATE doctors
-          SET name = ? lastname = ? specialty = ?
+          SET name = ?, lastname = ?, specialty = ?
           where id = ?
          '''
         CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))

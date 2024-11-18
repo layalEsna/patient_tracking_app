@@ -36,7 +36,8 @@ def patient_enumerate_list():
             
             doctor = Doctor.find_by_id(selected_patient.doctor_id)
             if doctor:
-                print(f'\n    Physician: {doctor.name} {doctor.lastname}')
+                print(f'\n    Physician: {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}')
+                print('\n      ********************')
             else:
                 print('\n    Physician information not found.')
                 print('\n      ********************')
@@ -52,15 +53,26 @@ def patient_enumerate_list():
                     break
 
                 else:
+                    print('\n    ********************')
                     print('\n    Invalid action. Please enter "u" to update or "d" to delete a patient.')
+                    print('\n    ********************')
 
         except IndexError:
+            print('\n    ********************')
             print('\n    Invalid choice. Please enter a number corresponding to a patient.')
+            print('\n    ********************')
         except ValueError:
+            print('\n    ********************')
             print('\n    Please enter a valid number, "m" for main menu, or "0" to exit.')
+            print('\n    ********************')
 
 
 
+def p_list():
+    patients = Patient.get_all()
+    for i, patient in enumerate(patients, start=1):
+       select = input(' select a patient anumber to get informatin: ')
+       select = int(select)
 
  
 
@@ -90,9 +102,9 @@ def patients_info():
         elif choice == '0':
             sys.exit('\n    Goodbye ✋!\n')
         else:
+            print('\n    ********************')
             print('\n    Invalid choice. Please try again.')
-
-
+            print('\n    ********************')
 
 
 
@@ -103,7 +115,7 @@ def doctor_enumerate_list():
     print('\n    ********************')
     print('\n    List of Doctors:')
     for i, doctor in enumerate(doctors, start=1):
-      print(f'\n    {i}- {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}')
+      print(f'\n    {i}- Dr. {doctor.name} {doctor.lastname}, Specialty: {doctor.specialty}')
     print('\n   ********************')
 
     
@@ -123,17 +135,19 @@ def doctor_enumerate_list():
       try:
         choice = int(choice)
         if choice < 1 or choice > len(doctors):
+            print('\n    ********************')
             print(f'\n    Invalid number. Please select a number between 1 and {len(doctors)}.')
+            print('\n    ********************')
         else:
             selected_doctor = doctors[choice - 1]  
             print('\n    ********************')
-            print(f'\n    Selected: {selected_doctor.name} {selected_doctor.lastname}')
+            print(f'\n    Selected: Dr. {selected_doctor.name} {selected_doctor.lastname}')
             print(f'\n    Specialty: {selected_doctor.specialty}')
-            print('      ********************\n')
+            print('\n      ********************')
             print('\n    Enter "m" to go back to main menu or "0" to exit the program.')
         
             action = input(f'\n    Enter "u" to update {selected_doctor.name} {selected_doctor.lastname}, "d" to delete the doctor, or "p" to view their patients: ').lower()
-            # print('\n    Enter "m" to go back to main menu or "0" to exit the program.')
+            
         
 
             if action == 'u':
@@ -150,9 +164,13 @@ def doctor_enumerate_list():
                 get_a_doctor_patients(selected_doctor)
 
             else:
+                 print('\n    ********************')
                  print('\n    Invalid action. Please enter "u" to update, "d" to delete, or "dp" to view patients.')
-      except ValueError:  
+                 print('\n    ********************')
+      except ValueError: 
+            print('\n    ********************') 
             print('\n    Invalid input. Please enter a valid number, "m" for main menu, or "0" to exit.')
+            print('\n    ********************')
 
 
 def doctors_info():
@@ -176,7 +194,9 @@ def doctors_info():
         elif choice == '0':
             sys.exit('\n    Goodbye ✋!\n')
         else:
+            print('\n    ********************')
             print('\n    Invalid choice. Please try again.')
+            print('\n    ********************')
 
 
 
@@ -195,7 +215,9 @@ def main_menu():
         elif choice == '0':
             sys.exit('\n    Goodbye 🤚!\n')
         else:
+            print('\n    ********************')
             print('\n    Invalid entry. Please try again.')
+            print('\n    ********************')
 
 
 if __name__ == "__main__":
@@ -204,4 +226,4 @@ if __name__ == "__main__":
 
 # PYTHONPATH=. python -m utils.cli   Selected: Susan Abad, Age: 43, Disease: GHHJ
 
-    # Physician: Sham Moore      9- www www, Specialty: www
+    # Physician: Sham Moore     J.Jm Walter

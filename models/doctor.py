@@ -123,7 +123,7 @@ class Doctor:
             doctor = cls(row[1], row[2], row[3])
             doctor.id = row[0]
             cls.all[doctor.id] = doctor
-        return doctor
+        return doctor if doctor else None
     
     @classmethod
     def find_by_id(cls, id):
@@ -157,24 +157,7 @@ class Doctor:
          '''
         CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
         CONN.commit()
-
-    # def update(self, name=None, lastname=None, specialty=None):
-    #     '''Update the doctor's details and save to the database.'''
-    #     if name:
-    #         self.name = name
-    #     if lastname:
-    #         self.lastname = lastname
-    #     if specialty:
-    #         self.specialty = specialty
-
-    #     sql = '''
-    #      UPDATE doctors
-    #      SET name = ?, lastname = ?, specialty = ?
-    #      WHERE id = ?
-    #      '''
         
-        CURSOR.execute(sql, (self.name, self.lastname, self.specialty, self.id))
-        CONN.commit()  
 
 
     
@@ -189,9 +172,7 @@ class Doctor:
 
         if doctor_id in cls.all:
             del cls.all[doctor_id]  
-        else:
-            print(f"\n    No doctor found with ID {doctor_id}.")
-
+        
     def list_a_doctor_patients(self):
         from models.patient import Patient
 
@@ -208,8 +189,8 @@ class Doctor:
      
 
     
-    #     #  PYTHONPATH=. python -m utils.cli
+    #       PYTHONPATH=. python -m utils.cli
 
-    #   Sham Moore, Specialty: Oncology
+    
 
 

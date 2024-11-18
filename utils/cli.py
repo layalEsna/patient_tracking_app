@@ -43,7 +43,11 @@ def patient_enumerate_list():
                 print('\n      ********************')
            
             while True:
+                
                 action = input(f'\n    Enter "u" to update {selected_patient.name} {selected_patient.lastname} or "d" to delete the patient: ').lower()
+                print('\n    Enter "m" for Main Menu')
+                print('\n    Enter 0 to exit the program')
+
                 
                 if action == 'u':
                     update_patient(selected_patient)
@@ -51,6 +55,10 @@ def patient_enumerate_list():
                 elif action == 'd':
                     delete_patient(selected_patient)
                     break
+                elif action == 'm':
+                    main_menu()
+                elif action == '0':
+                    sys.exit('\n    Goodbye ✋!\n')
 
                 else:
                     print('\n    ********************')
@@ -65,30 +73,16 @@ def patient_enumerate_list():
             print('\n    ********************')
             print('\n    Please enter a valid number, "m" for main menu, or "0" to exit.')
             print('\n    ********************')
-
-
-
-def p_list():
-    patients = Patient.get_all()
-    for i, patient in enumerate(patients, start=1):
-       select = input(' select a patient anumber to get informatin: ')
-       select = int(select)
-
  
 
 def patients_info():
     while True:
         print('\n    >>>>>> Patients Menu...')
-        print('\n    Press " m " to go back to the main menu.')
-
         print("\n    pl) Patients List:\n")
-        
-        
         print("\n    ap) Add a new patient\n")
-      
-        
-        
-        print("\n    0- Exit\n")
+        print('\n    Enter "m" for Main Menu')
+        print('\n    Enter 0 to exit the program')
+
 
         choice = input('\n    Enter your choice: ').lower()
         if choice == 'pl':
@@ -143,8 +137,10 @@ def doctor_enumerate_list():
             print('\n    ********************')
             print(f'\n    Selected: Dr. {selected_doctor.name} {selected_doctor.lastname}')
             print(f'\n    Specialty: {selected_doctor.specialty}')
-            print('\n      ********************')
-            print('\n    Enter "m" to go back to main menu or "0" to exit the program.')
+            print('\n    ********************')
+            print('\n    Enter "m" for Main Menu')
+            print('\n    Enter 0 to exit the program')
+
         
             action = input(f'\n    Enter "u" to update {selected_doctor.name} {selected_doctor.lastname}, "d" to delete the doctor, or "p" to view their patients: ').lower()
             
@@ -161,7 +157,8 @@ def doctor_enumerate_list():
                 delete_doctor(selected_doctor)
 
             elif action == 'p':
-                get_a_doctor_patients(selected_doctor)
+               get_a_doctor_patients(selected_doctor)
+               
 
             else:
                  print('\n    ********************')
@@ -224,6 +221,6 @@ if __name__ == "__main__":
     seed_database()
     main_menu()
 
-# PYTHONPATH=. python -m utils.cli   Selected: Susan Abad, Age: 43, Disease: GHHJ
+# PYTHONPATH=. python -m utils.cli   
 
-    # Physician: Sham Moore     J.Jm Walter
+   

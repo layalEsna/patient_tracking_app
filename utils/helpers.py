@@ -7,7 +7,7 @@ from models.patient import Patient
 from models.doctor import Doctor
 
 
-# ----
+
 def add_patient():
     while True:
         try:
@@ -132,9 +132,9 @@ def delete_patient(patient):
                     print('\n      ********************')
                     break
                 elif confirm == 'n':
-                    print('\n      ********************')
+                    print('\n    ********************')
                     print('\n    Deletion canceled.')
-                    print('\n      ********************') 
+                    print('\n    ********************') 
                     break
 
            
@@ -261,7 +261,7 @@ def add_doctor():
     print('\n    Add New doctor...')
     while True:
         try:
-            doctor_first_name = input(f"\n    Update doctor's name: ") 
+            doctor_first_name = input(f"\n    Enter doctor's name: ") 
             if not isinstance(doctor_first_name, str) or len(doctor_first_name) < 2:
                 raise ValueError("\n    Doctor's name must be a string and more than 2 characters.")
             break
@@ -296,14 +296,14 @@ def add_doctor():
     try:
        doctor = Doctor.create(doctor_first_name, doctor_lastname,doctor_specialty)
        print('\n    ********************')
-       print(f'\n     Success {doctor_first_name} {doctor_lastname}, Specialty: {doctor_specialty} added.')
+       print(f'\n   Success {doctor_first_name} {doctor_lastname}, Specialty: {doctor_specialty} added.')
        print('\n    ********************')
        return doctor
     except ValueError as e:
         print(f"\n    Error: {e}. Please try again.")
         return None
         
-# ------
+
 
 def update_doctor(doctor):
     if isinstance(doctor, Doctor): 
@@ -373,7 +373,7 @@ def delete_doctor(doctor):
 
 
 def get_a_doctor_patients(doctor):
-    # doctor = Doctor.get_by_name(doctor.name, doctor.lastname)
+    
     if doctor:
         patients = doctor.list_a_doctor_patients()
         if patients:

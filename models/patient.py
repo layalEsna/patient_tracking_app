@@ -126,15 +126,10 @@ class Patient:
         existing_patient = cls.get_by_name(name, lastname)
         if existing_patient:
             return existing_patient
-    
-  
-        patient = cls(name=name, lastname=lastname,age=age, disease=disease, doctor_id=doctor_id)
-    
-    
-        patient.save()
-    
-        
-        return patient
+        else:
+            new_patient = cls(name, lastname, age, disease, doctor_id)
+            new_patient.save()
+            return new_patient
 
 
     
@@ -199,8 +194,8 @@ class Patient:
          '''
         CURSOR.execute(sql, (self.id, ))
         CONN.commit()
-
-        del type(self).all[self.id] 
+        if self.id in type(self).all:
+            del type(self).all[self.id] 
         self.id = None
 
    
